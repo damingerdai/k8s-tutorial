@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8s-test
+  labels:
+    app: k8s-test
+spec:
+  replicas: 2
+  template:
+    metadata:
+      name: k8s-test
+      labels:
+        app: k8s-test
+        env: test
+    spec:
+      containers:
+        - name: k8s-test
+          image: k8s-test:0.0.1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http-port
+              containerPort: 8080
+      imagePullSecrets:
+        - name: docker-registry-secret
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: k8s-test
